@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ // todo add correct types
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '../ui/badge';
+import { Badge } from './ui/badge';
 import { MusicItem } from '@/types/types';
 
 interface ArtistCardProps {
@@ -11,7 +11,7 @@ interface ArtistCardProps {
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 	return (
 		<Card className="hover:shadow-lg transition-shadow">
-			<CardHeader className="space-y-1 h-[102px]">
+			<CardHeader className="space-y-1 h-[85px]">
 				<CardTitle className="text-lg font-semibold line-clamp-2">{artist.title}</CardTitle>
 			</CardHeader>
 			<CardContent>

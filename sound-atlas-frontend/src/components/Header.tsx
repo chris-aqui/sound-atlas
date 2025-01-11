@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModeToggle } from '../mode-toggle';
+import { ModeToggle } from './mode-toggle';
 
 const Header: React.FC = () => {
 	// bg-white-800 dark:bg-slate-800
