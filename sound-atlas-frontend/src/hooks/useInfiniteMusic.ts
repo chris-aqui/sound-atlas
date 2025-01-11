@@ -1,6 +1,6 @@
 import useSWRInfinite from 'swr/infinite';
 import { MusicItem, ApiTopArtistResponse } from '@/types/types';
-import { useSelectedFilters } from '@/store/useMusicFiltersStore';
+import { useMusicFiltersStore } from '@/store/useStore';
 
 const fetcher = (url: string) =>
   fetch(url).then((res) => {
@@ -27,7 +27,7 @@ const buildQueryParams = (page: number, country: string, year: number, genre: st
 };
 
 export const useInfiniteMusic = () => {
-  const { country, year, genre } = useSelectedFilters();
+  const { country, year, genre } = useMusicFiltersStore();
 
   const getKey = (pageIndex: number, previousPageData: ApiTopArtistResponse | null) => {
     // If we have no more pages, return null

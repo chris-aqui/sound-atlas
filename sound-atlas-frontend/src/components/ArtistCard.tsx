@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */ // todo add correct types
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MusicItem } from '@/types/types';
-import { useMusicFiltersStore } from '@/store/useMusicFiltersStore';
+import { useCurrentlyViewingStore } from '@/store/useStore';
 
 interface ArtistCardProps {
 	artist: MusicItem;
@@ -13,7 +12,7 @@ interface ArtistCardProps {
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 	const artistName = artist.title.split(' - ')[0];
 	const navigate = useNavigate();
-	const { setCurrentlyViewing } = useMusicFiltersStore();
+	const { setCurrentlyViewing } = useCurrentlyViewingStore();
 
 	const handleViewArtist = async () => {
 		try {
@@ -44,7 +43,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 					{artist.genre && (
 						<div className="flex flex-wrap gap-1 text-muted-foreground">
 							Album Genre:
-							{artist.genre.map((genre: any) => (
+							{artist.genre.map((genre) => (
 								<Badge key={genre} variant="secondary" className="text-xs">
 									{genre}
 								</Badge>

@@ -2,30 +2,30 @@ import GenericDropdown from './GenericDropdown';
 import { years } from '@/constants/mockYears';
 import { mockListCountries } from '@/constants/mockCountries';
 import { genres } from '@/constants/mockGenre';
-import { useMusicFiltersStore } from '@/store/useMusicFiltersStore';
+import { useMusicFiltersStore } from '@/store/useStore';
 
 const MusicFilters: React.FC = () => {
-	const { filters, updateCountry, updateGenre, updateYear } = useMusicFiltersStore();
+	const { country, year, genre, updateCountry, updateGenre, updateYear } = useMusicFiltersStore();
 
 	return (
 		<section className="music-filters-page  flex flex-row items-center w-full justify-around">
 			<GenericDropdown
 				items={mockListCountries}
-				selectedItem={filters.country}
+				selectedItem={country}
 				onItemSelect={updateCountry}
 				labelExtractor={(country): string => country}
 				title="Country"
 			/>
 			<GenericDropdown
 				items={years}
-				selectedItem={filters.year}
+				selectedItem={year}
 				onItemSelect={updateYear}
 				labelExtractor={(year): string => year.toString()}
 				title="Year"
 			/>
 			<GenericDropdown
 				items={genres}
-				selectedItem={filters.genre}
+				selectedItem={genre}
 				onItemSelect={updateGenre}
 				labelExtractor={(genre): string => genre}
 				title="Genre"
