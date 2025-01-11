@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ // todo add correct types
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from './ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { MusicItem } from '@/types/types';
 
 interface ArtistCardProps {
@@ -9,6 +10,7 @@ interface ArtistCardProps {
 }
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
+	const artistName = artist.title.split(' - ')[0];
 	return (
 		<Card className="hover:shadow-lg transition-shadow">
 			<CardHeader className="space-y-1 h-[85px]">
@@ -21,7 +23,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 				>
 					<img
 						src={artist.cover_image}
-						// src={artist.thumb}
 						alt={artist.title}
 						className="h-[250px] w-[250px] object-contain mx-auto"
 					/>
@@ -29,6 +30,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 				<div className="space-y-2">
 					{artist.genre && (
 						<div className="flex flex-wrap gap-1">
+							Album Genre:
 							{artist.genre.map((genre: any) => (
 								<Badge key={genre} variant="secondary" className="text-xs">
 									{genre}
@@ -36,18 +38,10 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 							))}
 						</div>
 					)}
-					{/* {artist.style && (
-						<div className="flex flex-wrap gap-1">
-							{artist.style.map((style) => (
-								<Badge key={style} variant="outline" className="text-xs">
-									{style}
-								</Badge>
-							))}
-						</div>
-					)} */}
 					<div className="text-sm text-muted-foreground">
-						{/* <div>Format: {artist.format.join(', ')}</div> */}
-						{artist.year && <div>Year: {artist.year}</div>}
+						View Artist: <Link to={`/artist/${artist.id}`}>{artistName}</Link>
+						{artist.year && <div>Album Year: {artist.year}</div>}
+						{/* Todo add bookmark feature */}
 					</div>
 				</div>
 			</CardContent>
