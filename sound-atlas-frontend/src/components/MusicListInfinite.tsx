@@ -95,10 +95,12 @@ const MusicListInfinite: React.FC = () => {
 				</div>
 			)}
 
-			<div ref={ref} className="h-4" />
+			<div ref={ref} className="h-4" aria-label="Loading more results" />
 
 			{!hasNextPage && data.length > 0 && (
-				<div className="text-center py-4 text-gray-500">End of results</div>
+				<div className="text-center py-4 text-gray-500" aria-label="End of results">
+					End of results
+				</div>
 			)}
 		</section>
 	);

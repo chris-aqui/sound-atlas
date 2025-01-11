@@ -15,7 +15,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
 				<div className="overflow-hidden rounded-lg flex justify-center  mb-2 mx-auto">
 					<img
 						src={album.thumb}
-						alt={album.title}
+						alt={`Thumbnail for ${album.title}`}
 						className="h-[250px] w-[250px] object-contain mx-auto"
 					/>
 				</div>
@@ -25,8 +25,13 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
 					<p className="line-clamp-1 text-md">Album: {album.title}</p>
 					<p className="line-clamp-1 text-sm">Year: {album.year}</p>
 					{/* // todo - add bookmark feature */}
-					<Button variant="ghost" size="sm" className="bg-indigo-500 dark:text-white text-white">
-						Favorite
+					<Button
+						variant="ghost"
+						size="sm"
+						className="bg-indigo-500 dark:text-white text-white"
+						aria-label="Add album to favorites"
+					>
+						Add Favorite
 					</Button>
 				</CardContent>
 			</CardHeader>

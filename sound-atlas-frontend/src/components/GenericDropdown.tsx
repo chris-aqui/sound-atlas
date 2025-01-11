@@ -22,12 +22,17 @@ const GenericDropdown = <T,>({
 }: GenericDropdownProps<T>) => {
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="px-4 py-2 border rounded-md shadow-md bg-white-800 dark:bg-slate-800 w-1/4">
+			<DropdownMenuTrigger
+				className="px-4 py-2 border rounded-md shadow-md bg-white-800 dark:bg-slate-800 w-1/4"
+				aria-haspopup="menu"
+				aria-expanded="false"
+				aria-label={`Select ${title}`}
+			>
 				{title}: {labelExtractor(selectedItem)}
 			</DropdownMenuTrigger>
-			<DropdownMenuContent>
+			<DropdownMenuContent role="menu">
 				{items.map((item, index) => (
-					<DropdownMenuItem key={index} onClick={() => onItemSelect(item)}>
+					<DropdownMenuItem role="menuitem" key={index} onClick={() => onItemSelect(item)}>
 						{labelExtractor(item)}
 					</DropdownMenuItem>
 				))}
