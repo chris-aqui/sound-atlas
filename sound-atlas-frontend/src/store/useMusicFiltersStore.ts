@@ -1,5 +1,7 @@
 import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { createJSONStorage, StateStorage, StorageValue } from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware'
 
 interface MusicFilters {
   country: string;
@@ -9,11 +11,15 @@ interface MusicFilters {
 
 interface MusicFiltersStore {
   filters: MusicFilters;
+  currentlyViewing: string | null;
+
   updateCountry: (country: string) => void;
   updateGenre: (genre: string) => void;
   updateYear: (year: number) => void;
-  updateFilters: (updates: Partial<MusicFilters>) => void;
-  resetFilters: () => void;
+  setCurrentlyViewing: (id: string) => void;
+
+  // updateFilters: (updates: Partial<MusicFilters>) => void; // todo - remove
+  // resetFilters: () => void; // todo - remove
 }
 
 const defaultFilters: MusicFilters = {
@@ -23,7 +29,8 @@ const defaultFilters: MusicFilters = {
 };
 
 export const useMusicFiltersStore = create<MusicFiltersStore>()(
-  devtools(
+  persist(
+    devtools(
     (set) => ({
       filters: defaultFilters,
 
@@ -54,27 +61,45 @@ export const useMusicFiltersStore = create<MusicFiltersStore>()(
           'filters/updateYear'
         ),
 
-      updateFilters: (updates) =>
-        set(
-          (state) => ({
-            filters: { ...state.filters, ...updates }
-          }),
-          false,
-          'filters/updateMultiple'
-        ),
+      // updateFilters: (updates) =>
+      //   set(
+      //     (state) => ({
+      //       filters: { ...state.filters, ...updates }
+      //     }),
+      //     false,
+      //     'filters/updateMultiple'
+      //   ),
 
-      resetFilters: () =>
-        set(
-          { filters: defaultFilters },
-          false,
-          'filters/reset'
-        ),
+      // resetFilters: () =>
+      //   set(
+      //     { filters: defaultFilters },
+      //     false,
+      //     'filters/reset'
+      //   ),
+
+        // Currently viewing artist
+        currentlyViewing: null,
+        setCurrentlyViewing: (id: string)=>
+          set(
+            () => ({
+              currentlyViewing: id
+            }),
+            false,
+            'Artist/currentlyViewing'
+          ),
+
+        // => set({ currentlyViewing: id }),
     }),
     {
       name: 'Music Filters Store',
       enabled: process.env.NODE_ENV === 'development',
     }
-  )
+  ),
+  {
+    name: 'music-storage',
+    storage: createJSONStorage(() => sessionStorage),
+  }
+)
 )
 
 export const useSelectedFilters = () => useMusicFiltersStore((state) => state.filters);

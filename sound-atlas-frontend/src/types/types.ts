@@ -56,11 +56,33 @@ export interface ApiTopArtistResponse {
   results: MusicItem[];
 }
 
-// export interface ArtistCardProps {
-//   id: number;
-//   title: string;
-//   thumb: string;
-//   cover_image: string;
-//   genre: string[];
-//   style: string[];
-// }
+export interface ArtistImage {
+  uri: string;
+  height: number;
+  width: number;
+  resource_url: string;
+  type: string;
+}
+
+export interface ArtistDetails {
+  id: number;
+  name: string;
+  images: ArtistImage[];
+  realname: string | null;
+  profile: string;
+  urls: string[];
+}
+
+export interface Release {
+  id: number;
+  title: string;
+  role: string;
+  year: number;
+  resource_url: string;
+  thumb: string;
+}
+
+export interface ArtistData {
+  artistDetails: ArtistDetails;
+  releases: Release[];
+}

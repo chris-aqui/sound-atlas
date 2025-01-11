@@ -17,7 +17,7 @@ app.use(express.json());
 // Proxy route for fetching top artists
 app.get('/api/top-artist', async (req, res) => {
 	// //top-artist?country=canada&year=2024&per_page=10&sort=hot&type=release
-	const { country, year, genre, ...otherParams } = req.query;
+	const { country, year, genre, artist, type, ...otherParams } = req.query;
 
 	if (!country) {
 		return res.status(400).json({ error: 'Country parameter is required' });
@@ -26,7 +26,7 @@ app.get('/api/top-artist', async (req, res) => {
 	try {
 		const params = {
 			country,
-			per_page: 10,
+			per_page: 25,
 			type: 'release',
 			sort: 'hot',
 			...(year && { year }),
@@ -43,6 +43,51 @@ app.get('/api/top-artist', async (req, res) => {
 		});
 
 		res.json(response.data);
+	} catch (error) {
+		console.error('Error fetching top artists:', error.message);
+		res.status(500).json({ error: 'Failed to fetch data from Discogs API' });
+	}
+});
+
+app.get('/api/artist/:id', async (req, res) => {
+	const { id } = req.params;
+	// example of api url: https://api.discogs.com/artists/1
+	try {
+		const artistResponse = await axios.get(`${DISCOGS_API_BASE_URL}/artists/${id}`, {
+			headers: {
+				Authorization: `Discogs token=${DISCOGS_USER_TOKEN}`,
+				'User-Agent': DISCOGS_USER_AGENT,
+			},
+		});
+
+		const releasesResponse = await axios.get(`${DISCOGS_API_BASE_URL}/artists/${id}/releases`, {
+			headers: {
+				Authorization: `Discogs token=${DISCOGS_USER_TOKEN}`,
+				'User-Agent': DISCOGS_USER_AGENT,
+			},
+		});
+
+		// Transform the data
+		const artistDetails = {
+			id: artistResponse.data.id,
+			name: artistResponse.data.name,
+			images: artistResponse.data.images || [],
+			realname: artistResponse.data.realname || null,
+			profile: artistResponse.data.profile,
+			urls: artistResponse.data.urls || [],
+		};
+
+		const releases = releasesResponse.data.releases.map((release) => ({
+			id: release.id,
+			title: release.title,
+			year: release.year,
+			format: release.format,
+			label: release.label,
+			thumb: release.thumb,
+			resource_url: release.resource_url,
+		}));
+
+		res.json({ artistDetails: artistDetails, releases });
 	} catch (error) {
 		console.error('Error fetching top artists:', error.message);
 		res.status(500).json({ error: 'Failed to fetch data from Discogs API' });
