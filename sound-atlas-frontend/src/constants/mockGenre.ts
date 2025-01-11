@@ -1,1 +1,1 @@
-export const genres = ['Rock', 'Pop', 'Jazz', 'Hip-Hop'];
+export const genres = ['','Rock', 'Pop', 'Jazz', 'Hip-Hop'];

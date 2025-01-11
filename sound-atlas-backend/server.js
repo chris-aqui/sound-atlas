@@ -10,10 +10,13 @@ const DISCOGS_USER_AGENT = 'SoundAtlasApp/1.0 +http://localhost:5173';
 const DISCOGS_USER_TOKEN = process.env.DISCOGS_USER_TOKEN;
 
 const app = express();
-const port = 5555;
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
 
 // Proxy route for fetching top artists
-app.get('/top-artist', async (req, res) => {
+app.get('/api/top-artist', async (req, res) => {
+	// //top-artist?country=canada&year=2024&per_page=10&sort=hot&type=release
 	const { country, year, genre, ...otherParams } = req.query;
 
 	if (!country) {
@@ -46,7 +49,7 @@ app.get('/top-artist', async (req, res) => {
 	}
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
 	connectDB(); // connect to MongoDB
-	console.log(`Server started at http://localhost:${port} 🚀`);
+	console.log(`Server started at http://localhost:${PORT} 🚀`);
 });

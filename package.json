@@ -4,7 +4,8 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon sound-atlas-backend/server.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "npm install && npm install --prefix sound-atlas-frontend && npm run build --prefix sound-atlas-frontend",
+		"start": "NODE_ENV=production node sound-atlas-backend/server.js"
 	},
 	"keywords": [],
 	"author": "",
