@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FavoritesPage: React.FC = () => {
-	return <div>FavoritesPage</div>;
+	return <div>Your Favorites </div>;
 };
 
 export default FavoritesPage;

@@ -1,17 +1,41 @@
 import React from 'react';
 import { ModeToggle } from './mode-toggle';
+import { SignedIn, SignedOut, SignOutButton } from '@clerk/clerk-react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+
+const UserClerkAuth: React.FC = () => {
+	return (
+		<div>
+			<SignedIn>
+				<SignOutButton>
+					<Button className="bg-indigo-600 text-white px-4 py-1 rounded">Sign Out</Button>
+				</SignOutButton>
+			</SignedIn>
+			<SignedOut>
+				<a href="/login" className="bg-indigo-600 text-white px-4 py-1 rounded">
+					Log In
+				</a>
+			</SignedOut>
+		</div>
+	);
+};
 
 const Header: React.FC = () => {
-	// bg-white-800 dark:bg-slate-800
-	// todo add auth signin and signout buttons
 	return (
 		<div className="w-full flex items-center justify-between">
-			<h1 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+			<div className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
 				<a className="no-underline" href="/">
 					🎵 Sound Atlas
 				</a>
-			</h1>
-			<ModeToggle />
+			</div>
+			<div className="flex items-center justify-between  gap-8 ">
+				<Link to="/favorites" className="text-indigo-600">
+					Favorites
+				</Link>
+				<UserClerkAuth />
+				<ModeToggle />
+			</div>
 		</div>
 	);
 };

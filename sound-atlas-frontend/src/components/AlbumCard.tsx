@@ -2,13 +2,51 @@ import { Release } from '@/types/types';
 import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@clerk/clerk-react';
+import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
 
 interface AlbumCardProps {
 	album: Release;
 }
 
 const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
-	console.log('album', album);
+	const { user, isSignedIn } = useUser();
+	const { toast } = useToast();
+
+	const handleAddFavorite = async () => {
+		if (!isSignedIn) {
+			toast({
+				variant: 'destructive',
+				description: 'Please log in to add favorites.',
+			});
+			return;
+		}
+
+		try {
+			await axios.post('/api/favorites', {
+				userId: user?.id,
+				favoriteAlbum: {
+					id: album.id,
+					title: album.title,
+					role: album.role,
+					year: album.year,
+					resource_url: album.resource_url,
+					thumb: album.thumb,
+				},
+			});
+			toast({
+				description: 'Added to favorites!',
+			});
+		} catch (error) {
+			console.error(error);
+			toast({
+				variant: 'destructive',
+				description: 'Failed to add to favorites.',
+			});
+		}
+	};
+
 	return (
 		<Card className="hover:shadow-lg transition-shadow">
 			<CardContent>
@@ -30,6 +68,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album }) => {
 						size="sm"
 						className="bg-indigo-500 dark:text-white text-white"
 						aria-label="Add album to favorites"
+						onClick={handleAddFavorite}
 					>
 						Add Favorite
 					</Button>

@@ -4,45 +4,7 @@ import { useInfiniteMusic } from '@/hooks/useInfiniteMusic';
 import ArtistCard from '@/components/ArtistCard';
 import LoadingCard from '@/components/LoadingCard';
 import { v4 as uuidv4 } from 'uuid';
-
-// const MusicListInfinite: React.FC = () => {
-// 	const { data, error, isValidating, setSize, size, hasNextPage } = useInfiniteMusic();
-
-// 	// Setup the intersection observer
-// 	const { ref, inView } = useInView({
-// 		// optionally set a rootMargin to trigger earlier, e.g., '200px'
-// 		rootMargin: '500px',
-// 		// watch for each time the sentinel crosses the threshold
-// 		triggerOnce: true,
-// 	});
-
-// 	// Whenever the sentinel is in view AND there is a next page, load more
-// 	useEffect(() => {
-// 		if (inView && hasNextPage) {
-// 			setSize(size + 1);
-// 		}
-// 	}, [inView, hasNextPage, size, setSize]);
-
-// 	if (error) return <div className="text-red-500">Error: {error.message}</div>;
-
-// 	return (
-// 		<section>
-// 			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-// 				{data.map((artist) => (
-// 					<ArtistCard key={artist.id} artist={artist} />
-// 				))}
-// 			</div>
-
-// 			{isValidating && <LoadingCard />}
-
-// 			<div ref={ref} className="my-4" />
-
-// 			{!hasNextPage && <div className="text-center mt-2">End of results</div>}
-// 		</section>
-// 	);
-// };
-
-// export default MusicListInfinite;
+import ListContent from '@/components/ListContent';
 
 const MusicListInfinite: React.FC = () => {
 	const { data, error, isValidating, setSize, size, hasNextPage } = useInfiniteMusic();
@@ -84,11 +46,11 @@ const MusicListInfinite: React.FC = () => {
 
 	return (
 		<section className="space-y-4">
-			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+			<ListContent>
 				{data.map((artist) => (
 					<ArtistCard key={uuidv4()} artist={artist} />
 				))}
-			</div>
+			</ListContent>
 			{isValidating && (
 				<div className="flex justify-center py-4">
 					<LoadingCard />

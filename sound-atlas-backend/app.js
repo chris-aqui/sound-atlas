@@ -1,6 +1,6 @@
 import express from 'express';
 import { errorHandler } from './middlewares/errorHandler.js';
-import artistRoutes from './routes/artistRoutes.js';
+import artistRoutes from './routes/artist.routes.js';
 
 const app = express();
 
