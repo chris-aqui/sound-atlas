@@ -81,15 +81,12 @@ export const listFavorites = async (req, res, next) => {
 	// console.log('listFavorites');
 	try {
 		const { userId } = req.query;
-		const { page = 1, limit = 10 } = req.query;
 
 		if (!userId) {
 			return res.status(400).json({ error: 'User ID is required.' });
 		}
 
-		const favorites = await Favorite.find({ userId })
-			.skip((page - 1) * limit)
-			.limit(parseInt(limit));
+		const favorites = await Favorite.find({ userId });
 
 		res.status(200).json(favorites);
 	} catch (error) {

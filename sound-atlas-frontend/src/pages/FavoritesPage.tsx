@@ -16,6 +16,7 @@ const FavoritesPage: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
+	// todo infinite scroll on favs. api should be paginated
 	useEffect(() => {
 		const fetchUserFavorites = async () => {
 			if (!userId) return;
