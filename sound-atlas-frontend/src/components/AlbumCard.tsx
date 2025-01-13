@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import FavoriteButton from '@/components/FavoriteButton';
 import { Release } from '@/types/types';
@@ -8,7 +8,7 @@ interface AlbumCardProps {
 	isFavorited?: boolean;
 }
 
-const AlbumCard: React.FC<AlbumCardProps> = ({ album, isFavorited }) => {
+const AlbumCard: React.FC<AlbumCardProps> = memo(({ album, isFavorited }) => {
 	return (
 		<Card className="hover:shadow-lg transition-shadow">
 			<CardContent>
@@ -29,6 +29,6 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, isFavorited }) => {
 			</CardHeader>
 		</Card>
 	);
-};
+});
 
 export default AlbumCard;
