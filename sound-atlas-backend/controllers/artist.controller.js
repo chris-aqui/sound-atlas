@@ -2,6 +2,7 @@ import { fetchArtistData, searchArtists } from '../services/discogs.service.js';
 import Favorite from '../models/Favorites.model.js';
 
 export const getTopArtists = async (req, res, next) => {
+	console.log('getTopArtists');
 	try {
 		const { country, year, genre, ...params } = req.query;
 		if (!country) return res.status(400).json({ error: 'Country parameter is required' });
@@ -14,6 +15,7 @@ export const getTopArtists = async (req, res, next) => {
 };
 
 export const getArtistDetails = async (req, res, next) => {
+	console.log('getArtistDetails');
 	try {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ error: 'Artist ID is required' });
@@ -26,6 +28,7 @@ export const getArtistDetails = async (req, res, next) => {
 };
 
 export const saveFavorite = async (req, res, next) => {
+	console.log('saveFavorite');
 	try {
 		const { userId, favoriteAlbum } = req.body;
 
@@ -58,6 +61,7 @@ export const saveFavorite = async (req, res, next) => {
 };
 
 export const checkFavoriteStatus = async (req, res, next) => {
+	console.log('checkFavoriteStatus');
 	try {
 		const { albumId } = req.params;
 		const { userId } = req.query;
@@ -75,6 +79,7 @@ export const checkFavoriteStatus = async (req, res, next) => {
 
 // batch check favorite status for multiple album IDs
 export const checkFavoriteStatusBatch = async (req, res, next) => {
+	console.log('checkFavoriteStatusBatch');
 	try {
 		const { userId, albumIds } = req.body;
 
@@ -100,6 +105,7 @@ export const checkFavoriteStatusBatch = async (req, res, next) => {
 };
 
 export const listFavorites = async (req, res, next) => {
+	console.log('listFavorites');
 	try {
 		const { userId } = req.query;
 		const { page = 1, limit = 10 } = req.query;
@@ -119,6 +125,7 @@ export const listFavorites = async (req, res, next) => {
 };
 
 export const removeFavorite = async (req, res, next) => {
+	console.log('removeFavorite');
 	try {
 		const { albumId } = req.params;
 		const { userId } = req.body;
