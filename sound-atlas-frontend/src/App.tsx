@@ -5,9 +5,9 @@ import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut, SignUp } from '@c
 import './App.css';
 import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/toaster';
-const Dashboard = lazy(() => import('@/pages/Dashboard/Dashboard'));
-const FavoritesPage = lazy(() => import('@/pages/Favorites/FavoritesPage'));
-const ArtistDetails = lazy(() => import('@/pages/ArtistDetails/ArtistDetails'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
+const ArtistPage = lazy(() => import('@/pages/ArtistPage'));
 const Login = React.lazy(() => import('@/pages/Login'));
 
 // Import your Publishable Key
@@ -27,7 +27,7 @@ const App: React.FC = () => {
 					<Suspense fallback={<div>Loading...</div>}>
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
-							<Route path="/artist/:artistId" element={<ArtistDetails />} />
+							<Route path="/artist/:artistId" element={<ArtistPage />} />
 							<Route path="/login/*" element={<Login />} />
 							<Route path="/sign-up/*" element={<SignUp />} />
 							<Route

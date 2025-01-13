@@ -63,7 +63,7 @@ export interface ArtistImage {
   type: string;
 }
 
-export interface ArtistDetails {
+export interface ArtistPage {
   id: number;
   name: string;
   images: ArtistImage[];
@@ -82,7 +82,7 @@ export interface Release {
 }
 
 export interface ArtistData {
-  artistDetails: ArtistDetails;
+  artistDetails: ArtistPage;
   releases: Release[];
 }
 
