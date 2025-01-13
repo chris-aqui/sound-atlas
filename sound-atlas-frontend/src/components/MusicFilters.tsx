@@ -8,7 +8,8 @@ const MusicFilters: React.FC = () => {
 	const { country, year, genre, updateCountry, updateGenre, updateYear } = useMusicFiltersStore();
 
 	return (
-		<section className="music-filters-page  flex flex-row items-center w-full justify-around">
+		// <section className="music-filters-page  flex flex-row items-center w-full justify-around">
+		<section className="music-filters-page flex flex-col items-center w-full gap-4 sm:flex-row sm:justify-around sm:gap-0">
 			<GenericDropdown
 				items={mockListCountries}
 				selectedItem={country}
