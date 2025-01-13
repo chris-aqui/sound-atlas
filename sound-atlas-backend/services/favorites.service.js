@@ -28,7 +28,7 @@ export const saveFavoriteAlbum = async (userId, favoriteAlbum) => {
  * @returns {boolean} - True if favorited, false otherwise.
  */
 export const isAlbumFavorited = async (userId, albumId) => {
-	const favorite = await Favorite.findOne({ userId, 'favoriteAlbum.id': albumId });
+	const favorite = await Favorite.findOne({ userId, 'favoriteAlbum.id': Number(albumId) });
 	return !!favorite;
 };
 

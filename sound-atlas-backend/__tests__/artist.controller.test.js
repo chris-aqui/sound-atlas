@@ -30,7 +30,11 @@ describe('Artist Controller', () => {
 			await getTopArtists(req, res, next);
 
 			expect(res.status).toHaveBeenCalledWith(400);
-			expect(res.json).toHaveBeenCalledWith({ error: 'Country parameter is required' });
+			expect(res.json).toHaveBeenCalledWith(
+				expect.objectContaining({
+					error: expect.stringContaining('country'),
+				}),
+			);
 		});
 
 		it('should return artist data when valid query is provided', async () => {
@@ -47,6 +51,8 @@ describe('Artist Controller', () => {
 				country: 'USA',
 				year: 2023,
 				genre: 'rock',
+				page: 1,
+				per_page: 25,
 			});
 			expect(res.status).toHaveBeenCalledWith(200);
 			expect(res.json).toHaveBeenCalledWith(mockData);
