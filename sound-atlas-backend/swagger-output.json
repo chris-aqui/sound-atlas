@@ -1,0 +1,550 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Sound Atlas API",
+		"description": "API documentation for the Sound Atlas application."
+	},
+	"host": "localhost:5000",
+	"basePath": "/api",
+	"schemes": ["http"],
+	"paths": {
+		"/favorites": {
+			"post": {
+				"summary": "Add an album to favorites",
+				"tags": ["Favorites"],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/FavoriteRequest"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Favorite added successfully",
+						"schema": {
+							"$ref": "#/definitions/FavoriteResponse"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/favorites/list": {
+			"get": {
+				"summary": "List all favorites for a user",
+				"tags": ["Favorites"],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "userId",
+						"required": true,
+						"type": "string",
+						"description": "ID of the user"
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"type": "integer",
+						"default": 1,
+						"description": "Page number"
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"type": "integer",
+						"default": 10,
+						"description": "Number of items per page"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of favorite albums",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Favorite"
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/favorites/batch-check": {
+			"post": {
+				"summary": "Batch check if albums are favorited",
+				"tags": ["Favorites"],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BatchCheckRequest"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Batch favorite status",
+						"schema": {
+							"$ref": "#/definitions/BatchCheckResponse"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/favorites/{albumId}": {
+			"delete": {
+				"summary": "Remove an album from favorites",
+				"tags": ["Favorites"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "albumId",
+						"required": true,
+						"type": "integer",
+						"description": "ID of the album to remove"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/DeleteFavoriteRequest"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Favorite removed successfully",
+						"schema": {
+							"$ref": "#/definitions/DeleteFavoriteResponse"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/top-artist": {
+			"get": {
+				"summary": "Get top artists",
+				"tags": ["Artists"],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "country",
+						"required": true,
+						"type": "string",
+						"description": "Country of the artist"
+					},
+					{
+						"in": "query",
+						"name": "year",
+						"type": "integer",
+						"description": "Year of release"
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"type": "integer",
+						"default": 1,
+						"description": "Page number"
+					},
+					{
+						"in": "query",
+						"name": "per_page",
+						"type": "integer",
+						"default": 25,
+						"description": "Number of items per page"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of top artists",
+						"schema": {
+							"$ref": "#/definitions/ApiTopArtistResponse"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"/artist/{id}": {
+			"get": {
+				"summary": "Get artist details by ID",
+				"tags": ["Artists"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"type": "integer",
+						"description": "ID of the artist"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Artist details including releases",
+						"schema": {
+							"$ref": "#/definitions/ArtistDetailsResponse"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					},
+					"404": {
+						"description": "Artist not found",
+						"schema": {
+							"$ref": "#/definitions/ErrorResponse"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"FavoriteRequest": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "string",
+					"example": "user_2rVcziV84zTPADpKjCC4eIymeQv"
+				},
+				"favoriteAlbum": {
+					"$ref": "#/definitions/Release"
+				}
+			},
+			"required": ["userId", "favoriteAlbum"]
+		},
+		"FavoriteResponse": {
+			"type": "object",
+			"properties": {
+				"message": {
+					"type": "string",
+					"example": "Favorite added successfully."
+				},
+				"favorite": {
+					"$ref": "#/definitions/Favorite"
+				}
+			}
+		},
+		"BatchCheckRequest": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "string",
+					"example": "user_2rVcziV84zTPADpKjCC4eIymeQv"
+				},
+				"albumIds": {
+					"type": "array",
+					"items": {
+						"type": "integer"
+					},
+					"example": [7696311, 10085644, 10085680, 8819589]
+				}
+			},
+			"required": ["userId", "albumIds"]
+		},
+		"BatchCheckResponse": {
+			"type": "object",
+			"properties": {
+				"favoriteStatus": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "boolean"
+					},
+					"example": {
+						"7696311": true,
+						"10085644": false
+					}
+				}
+			}
+		},
+		"DeleteFavoriteRequest": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "string",
+					"example": "user_2rVcziV84zTPADpKjCC4eIymeQv"
+				}
+			},
+			"required": ["userId"]
+		},
+		"DeleteFavoriteResponse": {
+			"type": "object",
+			"properties": {
+				"message": {
+					"type": "string",
+					"example": "Favorite removed successfully."
+				}
+			}
+		},
+		"ErrorResponse": {
+			"type": "object",
+			"properties": {
+				"error": {
+					"type": "string",
+					"example": "Artist not found"
+				}
+			}
+		},
+		"Favorite": {
+			"type": "object",
+			"properties": {
+				"_id": {
+					"type": "string",
+					"example": "678552f18bebf7be99c21b3d"
+				},
+				"userId": {
+					"type": "string",
+					"example": "user_2rVcziV84zTPADpKjCC4eIymeQv"
+				},
+				"favoriteAlbum": {
+					"$ref": "#/definitions/Release"
+				},
+				"createdAt": {
+					"type": "string",
+					"format": "date-time",
+					"example": "2025-01-13T17:52:49.800Z"
+				},
+				"updatedAt": {
+					"type": "string",
+					"format": "date-time",
+					"example": "2025-01-13T17:52:49.800Z"
+				}
+			}
+		},
+		"Release": {
+			"type": "object",
+			"properties": {
+				"id": { "type": "integer", "example": 32803992 },
+				"title": { "type": "string", "example": "Bed Chem" },
+				"role": { "type": "string", "example": "Main" },
+				"year": { "type": "integer", "example": 2025 },
+				"resource_url": {
+					"type": "string",
+					"example": "https://api.discogs.com/releases/32803992"
+				},
+				"thumb": {
+					"type": "string",
+					"example": "https://i.discogs.com/nxKGNiArC7JVxaRzN_yjiZtoAF3_28kXKoka3YhW_CM/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMyODAz/OTkyLTE3MzY1MTg0/OTUtMzE4Mi5qcGVn.jpeg"
+				}
+			},
+			"required": ["id", "title", "role", "year", "resource_url", "thumb"]
+		},
+		"ApiTopArtistResponse": {
+			"type": "object",
+			"properties": {
+				"pagination": {
+					"type": "object",
+					"properties": {
+						"page": { "type": "integer", "example": 1 },
+						"pages": { "type": "integer", "example": 227 },
+						"per_page": { "type": "integer", "example": 25 },
+						"items": { "type": "integer", "example": 5663 }
+					}
+				},
+				"results": {
+					"type": "array",
+					"items": { "$ref": "#/definitions/MusicItem" }
+				}
+			}
+		},
+		"MusicItem": {
+			"type": "object",
+			"properties": {
+				"id": { "type": "integer", "example": 32717937 },
+				"title": { "type": "string", "example": "Taylor Swift - The Anthology" },
+				"country": { "type": "string", "example": "Canada" },
+				"year": { "type": "string", "example": "2024" },
+				"genre": {
+					"type": "array",
+					"items": { "type": "string" },
+					"example": ["Electronic", "Pop"]
+				},
+				"format": {
+					"type": "array",
+					"items": { "type": "string" },
+					"example": ["Vinyl", "LP"]
+				},
+				"thumb": {
+					"type": "string",
+					"example": "https://i.discogs.com/example-thumbnail.jpeg"
+				},
+				"resource_url": {
+					"type": "string",
+					"example": "https://api.discogs.com/releases/32717937"
+				},
+				"community": {
+					"type": "object",
+					"properties": {
+						"want": { "type": "integer", "example": 9 },
+						"have": { "type": "integer", "example": 86 }
+					}
+				}
+			},
+			"required": ["id", "title", "country", "year", "genre", "format"]
+		},
+		"ArtistDetailsResponse": {
+			"type": "object",
+			"properties": {
+				"artistDetails": {
+					"type": "object",
+					"properties": {
+						"name": { "type": "string", "example": "Taylor Swift" },
+						"id": { "type": "integer", "example": 1124645 },
+						"resource_url": {
+							"type": "string",
+							"example": "https://api.discogs.com/artists/1124645"
+						},
+						"uri": {
+							"type": "string",
+							"example": "https://www.discogs.com/artist/1124645-Taylor-Swift"
+						},
+						"releases_url": {
+							"type": "string",
+							"example": "https://api.discogs.com/artists/1124645/releases"
+						},
+						"images": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"type": { "type": "string", "example": "primary" },
+									"uri": {
+										"type": "string",
+										"example": "https://i.discogs.com/example-primary-image.jpeg"
+									},
+									"resource_url": {
+										"type": "string",
+										"example": "https://i.discogs.com/example-resource-image.jpeg"
+									},
+									"uri150": {
+										"type": "string",
+										"example": "https://i.discogs.com/example-thumbnail-image.jpeg"
+									},
+									"width": { "type": "integer", "example": 600 },
+									"height": { "type": "integer", "example": 800 }
+								}
+							}
+						},
+						"realname": {
+							"type": "string",
+							"example": "Taylor Alison Swift"
+						},
+						"profile": {
+							"type": "string",
+							"example": "American singer-songwriter, born December 13, 1989 in Reading, Pennsylvania, USA."
+						},
+						"urls": {
+							"type": "array",
+							"items": { "type": "string", "example": "https://www.taylorswift.com/" }
+						},
+						"namevariations": {
+							"type": "array",
+							"items": { "type": "string", "example": "T. Swift" }
+						},
+						"aliases": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "integer", "example": 5023427 },
+									"name": { "type": "string", "example": "Nils Sjöberg (2)" },
+									"resource_url": {
+										"type": "string",
+										"example": "https://api.discogs.com/artists/5023427"
+									},
+									"thumbnail_url": {
+										"type": "string",
+										"example": "https://i.discogs.com/example-thumbnail.jpeg"
+									}
+								}
+							}
+						},
+						"data_quality": { "type": "string", "example": "Needs Vote" }
+					}
+				},
+				"releases": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": { "type": "integer", "example": 7696311 },
+							"status": { "type": "string", "example": "Accepted" },
+							"type": { "type": "string", "example": "release" },
+							"format": { "type": "string", "example": "CD, Promo" },
+							"label": { "type": "string", "example": "Leesport" },
+							"title": { "type": "string", "example": "Taylor Swift" },
+							"resource_url": {
+								"type": "string",
+								"example": "https://api.discogs.com/releases/7696311"
+							},
+							"role": { "type": "string", "example": "Main" },
+							"artist": { "type": "string", "example": "Taylor Swift" },
+							"year": { "type": "integer", "example": 2002 },
+							"thumb": {
+								"type": "string",
+								"example": "https://i.discogs.com/example-thumbnail.jpeg"
+							},
+							"stats": {
+								"type": "object",
+								"properties": {
+									"community": {
+										"type": "object",
+										"properties": {
+											"in_wantlist": { "type": "integer", "example": 451 },
+											"in_collection": { "type": "integer", "example": 27 }
+										}
+									},
+									"user": {
+										"type": "object",
+										"properties": {
+											"in_wantlist": { "type": "integer", "example": 0 },
+											"in_collection": { "type": "integer", "example": 0 }
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
