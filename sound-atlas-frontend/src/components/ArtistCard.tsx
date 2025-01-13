@@ -35,7 +35,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 				<div className="overflow-hidden rounded-lg flex justify-center  mb-2 mx-auto">
 					<img
 						src={artist.cover_image}
-						alt={artist.title}
+						alt={`Cover image of ${artist.title}`}
 						className="h-[250px] w-[250px] object-contain mx-auto"
 					/>
 				</div>
@@ -55,7 +55,6 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist }) => {
 						<Link to="#" onClick={handleViewArtist}>
 							{artistName}
 						</Link>
-						{/* Todo add bookmark feature */}
 					</div>
 				</div>
 			</CardContent>

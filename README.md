@@ -30,6 +30,7 @@ https://github.com/chris-aqui/sound-atlas.git
 ```
 
 Install dependencies:
+open two terminals and cd into both frontend and backend and run npm i
 
 Set up environment variables: Create a .env file in the root directory and add the following variables:
 ```

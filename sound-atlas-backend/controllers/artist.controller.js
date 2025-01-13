@@ -1,12 +1,22 @@
+import Joi from 'joi';
 import { fetchArtistData, searchArtists } from '../services/discogs.service.js';
 
-export const getTopArtists = async (req, res, next) => {
-	// console.log('getTopArtists');
-	try {
-		const { country, year, genre, ...params } = req.query;
-		if (!country) return res.status(400).json({ error: 'Country parameter is required' });
+const artistQuerySchema = Joi.object({
+	country: Joi.string().required(),
+	year: Joi.number().min(1900).max(new Date().getFullYear()).optional(),
+	genre: Joi.string().optional(),
+	page: Joi.number().min(1).default(1),
+	per_page: Joi.number().min(1).max(100).default(25),
+});
 
-		const data = await searchArtists({ country, year, genre, ...params });
+export const getTopArtists = async (req, res, next) => {
+	try {
+		const { error, value } = artistQuerySchema.validate(req.query);
+		if (error) {
+			return res.status(400).json({ error: error.details.map((d) => d.message).join(', ') });
+		}
+
+		const data = await searchArtists(value);
 		res.status(200).json(data);
 	} catch (error) {
 		next(error);
@@ -14,7 +24,6 @@ export const getTopArtists = async (req, res, next) => {
 };
 
 export const getArtistDetails = async (req, res, next) => {
-	// console.log('getArtistDetails');
 	try {
 		const { id } = req.params;
 		if (!id) return res.status(400).json({ error: 'Artist ID is required' });

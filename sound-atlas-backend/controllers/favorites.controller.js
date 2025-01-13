@@ -1,4 +1,11 @@
 import Favorite from '../models/Favorites.model.js';
+import Joi from 'joi';
+
+const querySchema = Joi.object({
+	userId: Joi.string().required(),
+	page: Joi.number().min(1).default(1),
+	limit: Joi.number().min(1).max(100).default(10),
+});
 
 export const saveFavorite = async (req, res, next) => {
 	// console.log('saveFavorite');
@@ -78,15 +85,17 @@ export const checkFavoriteStatusBatch = async (req, res, next) => {
 };
 
 export const listFavorites = async (req, res, next) => {
-	// console.log('listFavorites');
 	try {
-		const { userId } = req.query;
-
-		if (!userId) {
-			return res.status(400).json({ error: 'User ID is required.' });
+		const { error, value } = querySchema.validate(req.query);
+		if (error) {
+			return res.status(400).json({ error: error.details.map((d) => d.message).join(', ') });
 		}
 
-		const favorites = await Favorite.find({ userId });
+		const { userId, page, limit } = value;
+
+		const favorites = await Favorite.find({ userId })
+			.skip((page - 1) * limit)
+			.limit(limit);
 
 		res.status(200).json(favorites);
 	} catch (error) {

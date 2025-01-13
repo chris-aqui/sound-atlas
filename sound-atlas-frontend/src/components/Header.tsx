@@ -13,9 +13,9 @@ const UserClerkAuth: React.FC = () => {
 				</SignOutButton>
 			</SignedIn>
 			<SignedOut>
-				<a href="/login" className="bg-indigo-600 text-white px-4 py-1 rounded">
+				<Link to="/login" className="bg-indigo-600 text-white px-4 py-1 rounded">
 					Log In
-				</a>
+				</Link>
 			</SignedOut>
 		</div>
 	);
