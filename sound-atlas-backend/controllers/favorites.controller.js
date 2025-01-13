@@ -1,5 +1,12 @@
-import Favorite from '../models/Favorites.model.js';
 import Joi from 'joi';
+import Favorite from '../models/Favorites.model.js';
+import {
+	saveFavoriteAlbum,
+	isAlbumFavorited,
+	checkBatchFavoriteStatus,
+	getFavorites,
+	removeFavoriteAlbum,
+} from '../services/favorites.service.js';
 
 const querySchema = Joi.object({
 	userId: Joi.string().required(),
@@ -8,7 +15,6 @@ const querySchema = Joi.object({
 });
 
 export const saveFavorite = async (req, res, next) => {
-	// console.log('saveFavorite');
 	try {
 		const { userId, favoriteAlbum } = req.body;
 
@@ -16,32 +22,14 @@ export const saveFavorite = async (req, res, next) => {
 			return res.status(400).json({ error: 'User ID and favorite album are required.' });
 		}
 
-		const existingFavorite = await Favorite.findOne({
-			userId,
-			'favoriteAlbum.id': favoriteAlbum.id,
-		});
-
-		if (existingFavorite) {
-			return res.status(200).json({ message: 'Already in favorites.' });
-		}
-
-		const newFavorite = new Favorite({ userId, favoriteAlbum });
-		await newFavorite.save();
-
-		res.status(201).json({
-			message: 'Favorite added successfully.',
-			favorite: newFavorite, // Return the new favorite
-		});
+		const result = await saveFavoriteAlbum(userId, favoriteAlbum);
+		res.status(result.existingFavorite ? 200 : 201).json(result);
 	} catch (error) {
-		if (error.code === 11000) {
-			return res.status(400).json({ error: 'This album is already in your favorites.' });
-		}
 		next(error);
 	}
 };
 
 export const checkFavoriteStatus = async (req, res, next) => {
-	// console.log('checkFavoriteStatus');
 	try {
 		const { albumId } = req.params;
 		const { userId } = req.query;
@@ -50,16 +38,14 @@ export const checkFavoriteStatus = async (req, res, next) => {
 			return res.status(400).json({ error: 'User ID and Album ID are required.' });
 		}
 
-		const favorite = await Favorite.findOne({ userId, 'favoriteAlbum.id': albumId });
-		res.status(200).json({ isFavorited: !!favorite });
+		const isFavorited = await isAlbumFavorited(userId, albumId);
+		res.status(200).json({ isFavorited });
 	} catch (error) {
 		next(error);
 	}
 };
 
-// batch check favorite status for multiple album IDs
 export const checkFavoriteStatusBatch = async (req, res, next) => {
-	// console.log('checkFavoriteStatusBatch');
 	try {
 		const { userId, albumIds } = req.body;
 
@@ -67,19 +53,9 @@ export const checkFavoriteStatusBatch = async (req, res, next) => {
 			return res.status(400).json({ error: 'User ID and an array of album IDs are required.' });
 		}
 
-		const favorites = await Favorite.find({
-			userId,
-			'favoriteAlbum.id': { $in: albumIds },
-		});
-
-		const favoriteStatus = albumIds.reduce((status, albumId) => {
-			status[albumId] = favorites.some((fav) => fav.favoriteAlbum.id === albumId);
-			return status;
-		}, {});
-
+		const favoriteStatus = await checkBatchFavoriteStatus(userId, albumIds);
 		res.status(200).json({ favoriteStatus });
 	} catch (error) {
-		console.error('Failed to check favorite statuses:', error);
 		next(error);
 	}
 };
@@ -93,10 +69,11 @@ export const listFavorites = async (req, res, next) => {
 
 		const { userId, page, limit } = value;
 
-		const favorites = await Favorite.find({ userId })
-			.skip((page - 1) * limit)
-			.limit(limit);
+		if (!userId) {
+			return res.status(400).json({ error: 'User ID is required.' });
+		}
 
+		const favorites = await getFavorites(userId, parseInt(page), parseInt(limit));
 		res.status(200).json(favorites);
 	} catch (error) {
 		next(error);
@@ -104,7 +81,6 @@ export const listFavorites = async (req, res, next) => {
 };
 
 export const removeFavorite = async (req, res, next) => {
-	// console.log('removeFavorite');
 	try {
 		const { albumId } = req.params;
 		const { userId } = req.body;
@@ -113,8 +89,8 @@ export const removeFavorite = async (req, res, next) => {
 			return res.status(400).json({ error: 'User ID and Album ID are required.' });
 		}
 
-		await Favorite.deleteOne({ userId, 'favoriteAlbum.id': albumId });
-		res.status(200).json({ message: 'Favorite removed successfully.' });
+		const result = await removeFavoriteAlbum(userId, albumId);
+		res.status(200).json(result);
 	} catch (error) {
 		next(error);
 	}
