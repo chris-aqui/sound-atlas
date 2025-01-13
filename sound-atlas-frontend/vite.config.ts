@@ -11,13 +11,12 @@ export default defineConfig(({ command }: ConfigEnv): UserConfig => {
 
 
   return {
-  root: './', // Keep the default root for frontend
-  envDir: '../', // Specify the directory where the .env file is located
+    root: path.resolve(__dirname), // Points to the client directory
+    envDir: path.resolve(__dirname, '..'), // Points to the root directory where .env is
   server: {
     open: true,
     proxy: {
 			"/api": {
-				// target: "http://localhost:5000",
         target: proxyTarget,
         changeOrigin: true,
 			},
