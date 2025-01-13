@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { ThemeProvider } from '@/lib/theme-provider';
-import { BrowserRouter as Router, Route, Routes } from 'react-router';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut, SignUp } from '@clerk/clerk-react';
 import './App.css';
 import Header from '@/components/Header';
@@ -33,17 +33,14 @@ const App: React.FC = () => {
 							<Route
 								path="/favorites"
 								element={
-									<SignedIn>
-										<FavoritesPage />
-									</SignedIn>
-								}
-							/>
-							<Route
-								path="/favorites"
-								element={
-									<SignedOut>
-										<RedirectToSignIn />
-									</SignedOut>
+									<>
+										<SignedIn>
+											<FavoritesPage />
+										</SignedIn>
+										<SignedOut>
+											<RedirectToSignIn />
+										</SignedOut>
+									</>
 								}
 							/>
 						</Routes>

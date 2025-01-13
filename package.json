@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon sound-atlas-backend/server.js",
+		"dev": "cross-env NODE_ENV=development nodemon sound-atlas-backend/server.js",
 		"build": "npm install && npm install --prefix sound-atlas-frontend && npm run build --prefix sound-atlas-frontend",
 		"start": "NODE_ENV=production node sound-atlas-backend/server.js"
 	},
@@ -13,6 +13,8 @@
 	"type": "module",
 	"description": "",
 	"dependencies": {
+		"axios": "^1.7.9",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",
 		"mongoose": "^8.9.4"

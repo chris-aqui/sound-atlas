@@ -4,6 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import { Button } from '@/components/ui/button';
 import { useFavoritesApi } from '@/hooks/useFavoritesApi';
 import { Release } from '@/types/types';
+import { useToast } from '@/hooks/use-toast';
 
 interface FavoriteButtonProps {
 	album: Release;
@@ -15,6 +16,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 	isFavorited: initialIsFavorited,
 }) => {
 	const { user } = useUser();
+	const { toast } = useToast();
 	const { pathname } = useLocation();
 	const { addToFavorites, removeFromFavorites } = useFavoritesApi();
 	const [isFavorited, setIsFavorited] = useState(initialIsFavorited || false); // Internal state for favorite status
@@ -33,7 +35,12 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 	};
 
 	const handleClick = async () => {
-		if (!user) return;
+		if (!user) {
+			toast({
+				variant: 'destructive',
+				description: 'You must be logged in to add to favorites.',
+			});
+		}
 		try {
 			if (isArtistPage) {
 				setIsFavorited(true);

@@ -27,6 +27,15 @@ export const useFavoritesApi = () => {
     userId: string,
     favoriteAlbum: Favorite['favoriteAlbum']
 ) => {
+  //  if the user is not logged in, send a toast message amd return
+  if (!userId) {
+    toast({
+      variant: 'destructive',
+      description: 'You must be logged in to add to favorites.',
+    });
+    return;
+  }
+
     try {
         const response = await axios.post('/api/favorites', { userId, favoriteAlbum });
         if (response.data.favorite) {
