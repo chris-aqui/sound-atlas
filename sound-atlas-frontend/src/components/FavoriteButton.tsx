@@ -42,10 +42,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 			});
 		}
 		try {
-			if (isArtistPage) {
+			if (isArtistPage && user) {
 				setIsFavorited(true);
 				await addToFavorites(user.id, favoriteAlbum);
-			} else if (isFavoritedPage) {
+			} else if (isFavoritedPage && user) {
 				setIsFavorited(false);
 				await removeFromFavorites(user.id, album.id);
 			}
