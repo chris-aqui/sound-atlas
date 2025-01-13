@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const UserClerkAuth: React.FC = () => {
 	return (
-		<div>
+		<div className="w-1/2 sm:w-auto">
 			<SignedIn>
 				<SignOutButton>
 					<Button className="bg-indigo-600 text-white px-4 py-1 rounded">Sign Out</Button>

@@ -11,6 +11,7 @@ interface GenericDropdownProps<T> {
 	onItemSelect: (item: T) => void;
 	labelExtractor: (item: T) => string;
 	title: string;
+	placeholder?: string;
 }
 
 const GenericDropdown = <T,>({
@@ -19,6 +20,7 @@ const GenericDropdown = <T,>({
 	onItemSelect,
 	labelExtractor,
 	title,
+	placeholder = 'Select Option',
 }: GenericDropdownProps<T>) => {
 	return (
 		<DropdownMenu>
@@ -28,7 +30,7 @@ const GenericDropdown = <T,>({
 				aria-expanded="false"
 				aria-label={`Select ${title}`}
 			>
-				{title}: {labelExtractor(selectedItem)}
+				{title}: {selectedItem ? labelExtractor(selectedItem) : placeholder}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent role="menu">
 				{items.map((item, index) => (
