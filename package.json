@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development nodemon sound-atlas-backend/server.js",
 		"build": "npm install && npm install --prefix sound-atlas-frontend && npm run build --prefix sound-atlas-frontend",
-		"start": "NODE_ENV=production node sound-atlas-backend/server.js"
+		"start": "cross-env NODE_ENV=production node sound-atlas-backend/server.js"
 	},
 	"keywords": [],
 	"author": "",
