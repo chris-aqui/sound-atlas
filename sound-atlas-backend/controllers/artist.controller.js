@@ -61,7 +61,6 @@ export const checkFavoriteStatus = async (req, res, next) => {
 	try {
 		const { albumId } = req.params;
 		const { userId } = req.query;
-		console.log('###-checkFavoriteStatus');
 
 		if (!userId || !albumId) {
 			return res.status(400).json({ error: 'User ID and Album ID are required.' });
@@ -78,7 +77,6 @@ export const checkFavoriteStatus = async (req, res, next) => {
 export const checkFavoriteStatusBatch = async (req, res, next) => {
 	try {
 		const { userId, albumIds } = req.body;
-		console.log('###-checkFavoriteStatusBatch');
 
 		if (!userId || !Array.isArray(albumIds)) {
 			return res.status(400).json({ error: 'User ID and an array of album IDs are required.' });
@@ -105,7 +103,6 @@ export const listFavorites = async (req, res, next) => {
 	try {
 		const { userId } = req.query;
 		const { page = 1, limit = 10 } = req.query;
-		console.log('###-listFavorites');
 
 		if (!userId) {
 			return res.status(400).json({ error: 'User ID is required.' });
