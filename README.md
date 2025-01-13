@@ -2,6 +2,8 @@
 #### deployed @ https://sound-atlas.onrender.com
 Sound Atlas is a web application that allows users to explore and favorite music albums from various artists. Users can filter albums by country, year, and genre, and view detailed information about artists and their releases. The application also supports user authentication and allows users to manage their favorite albums.
 
+https://github.com/user-attachments/assets/e9676f0c-c9e1-4cd8-b361-b95754ce5a09
+
 #### Frontend
 - React: A JavaScript library for building user interfaces.
 - Tailwind CSS: A utility-first CSS framework for rapid UI development.
