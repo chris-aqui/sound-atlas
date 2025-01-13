@@ -30,11 +30,10 @@ export const useInfiniteMusic = () => {
   const { country, year, genre } = useMusicFiltersStore();
 
   const getKey = (pageIndex: number, previousPageData: ApiTopArtistResponse | null) => {
-    // If we have no more pages, return null
+
     if (previousPageData && !previousPageData.pagination.urls.next) {
       return null;
     }
-    // build next url
     return `/api/top-artist?${buildQueryParams(
       pageIndex + 1,
       country,

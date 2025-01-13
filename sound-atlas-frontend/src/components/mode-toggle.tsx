@@ -1,3 +1,4 @@
+// taken from https://ui.shadcn.com/docs/dark-mode/vite
 import { Moon, Sun } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from '@/components/theme-provider';
+import { useTheme } from '@/lib/theme-provider';
 
 export function ModeToggle() {
 	const { setTheme } = useTheme();

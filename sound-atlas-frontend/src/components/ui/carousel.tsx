@@ -103,16 +103,13 @@ const Carousel = React.forwardRef<
 			const autoPlay = () => {
 				if (api.canScrollNext()) {
 					api.scrollNext();
-				} else {
-					// api.scrollTo(0); // Loop back to the beginning
 				}
 			};
 
 			const intervalId = setInterval(autoPlay, autoPlayInterval);
 
-			return () => clearInterval(intervalId); // Cleanup on unmount
+			return () => clearInterval(intervalId);
 		}, [api, autoPlayInterval]);
-		//
 
 		React.useEffect(() => {
 			if (!api || !setApi) {

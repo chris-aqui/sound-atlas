@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/lib/theme-provider';
 import { BrowserRouter as Router, Route, Routes } from 'react-router';
 import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut, SignUp } from '@clerk/clerk-react';
 import './App.css';
@@ -28,7 +28,6 @@ const App: React.FC = () => {
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/artist/:artistId" element={<ArtistDetails />} />
-							{/* <Route path="/favorites" element={<FavoritesPage />} /> */}
 							<Route path="/login/*" element={<Login />} />
 							<Route path="/sign-up/*" element={<SignUp />} />
 							<Route

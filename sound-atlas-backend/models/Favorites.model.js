@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const FavoriteAlbumSchema = new mongoose.Schema(
 	{
-		id: { type: String, required: true },
+		id: { type: Number, required: true },
 		title: { type: String, required: true },
 		role: { type: String, required: true },
 		year: { type: Number, required: true },

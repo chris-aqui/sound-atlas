@@ -10,7 +10,6 @@ export const useFetchArtistData = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('currentlyViewing:', currentlyViewing);
     const fetchData = async (id: string) => {
       try {
         setLoading(true);

@@ -1,5 +1,4 @@
 
-// Define the types for the API response
 export interface Pagination {
   page: number;
   pages: number;
@@ -85,4 +84,11 @@ export interface Release {
 export interface ArtistData {
   artistDetails: ArtistDetails;
   releases: Release[];
+}
+
+export interface Favorite {
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  favoriteAlbum: Release;
 }
