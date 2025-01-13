@@ -17,7 +17,10 @@ const startServer = async () => {
 	try {
 		await connectDB();
 		app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-		app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+		app.listen(PORT, () => {
+			console.log(`🚀 Server running on http://localhost:${PORT}`);
+			console.log(`👾 API documentation available at http://localhost:${PORT}/api-docs/`);
+		});
 	} catch (error) {
 		console.error('Failed to start server:', error.message);
 		process.exit(1);
