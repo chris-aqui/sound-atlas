@@ -5,6 +5,8 @@ import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut, SignUp } from '@c
 import './App.css';
 import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/toaster';
+import LoadingCard from '@/components/LoadingCard';
+import ErrorBoundary from '@/components/ErrorBoundary';
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
 const ArtistPage = lazy(() => import('@/pages/ArtistPage'));
@@ -24,27 +26,29 @@ const App: React.FC = () => {
 				<Router>
 					<Header />
 					<Toaster />
-					<Suspense fallback={<div>Loading...</div>}>
-						<Routes>
-							<Route path="/" element={<Dashboard />} />
-							<Route path="/artist/:artistId" element={<ArtistPage />} />
-							<Route path="/login/*" element={<Login />} />
-							<Route path="/sign-up/*" element={<SignUp />} />
-							<Route
-								path="/favorites"
-								element={
-									<>
-										<SignedIn>
-											<FavoritesPage />
-										</SignedIn>
-										<SignedOut>
-											<RedirectToSignIn />
-										</SignedOut>
-									</>
-								}
-							/>
-						</Routes>
-					</Suspense>
+					<ErrorBoundary>
+						<Suspense fallback={<LoadingCard />}>
+							<Routes>
+								<Route path="/" element={<Dashboard />} />
+								<Route path="/artist/:artistId" element={<ArtistPage />} />
+								<Route path="/login/*" element={<Login />} />
+								<Route path="/sign-up/*" element={<SignUp />} />
+								<Route
+									path="/favorites"
+									element={
+										<>
+											<SignedIn>
+												<FavoritesPage />
+											</SignedIn>
+											<SignedOut>
+												<RedirectToSignIn />
+											</SignedOut>
+										</>
+									}
+								/>
+							</Routes>
+						</Suspense>
+					</ErrorBoundary>
 				</Router>
 			</ClerkProvider>
 		</ThemeProvider>

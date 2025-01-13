@@ -5,7 +5,7 @@ import { useFavoritesStore } from '@/store/useFavoritesStore';
 import { useFavoritesApi } from '@/hooks/useFavoritesApi';
 import AlbumCard from '@/components/AlbumCard';
 import ListContent from '@/components/ListContent';
-
+import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingCard from '@/components/LoadingCard';
 
 const FavoritesPage: React.FC = () => {
@@ -43,16 +43,18 @@ const FavoritesPage: React.FC = () => {
 	console.log('favorites', favorites);
 
 	return (
-		<Suspense fallback={<LoadingCard />}>
-			<section className="container mx-auto mt-5">
-				<h1 className="text-2xl font-bold">Your Favorites</h1>
-				<ListContent>
-					{favorites.map((album) => (
-						<AlbumCard key={uuidv4()} album={album.favoriteAlbum} isFavorited={true} />
-					))}
-				</ListContent>
-			</section>
-		</Suspense>
+		<ErrorBoundary>
+			<Suspense fallback={<LoadingCard />}>
+				<section className="container mx-auto mt-5">
+					<h1 className="text-2xl font-bold">Your Favorites</h1>
+					<ListContent>
+						{favorites.map((album) => (
+							<AlbumCard key={uuidv4()} album={album.favoriteAlbum} isFavorited={true} />
+						))}
+					</ListContent>
+				</section>
+			</Suspense>
+		</ErrorBoundary>
 	);
 };
 

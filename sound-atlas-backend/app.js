@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { errorHandler } from './middlewares/errorHandler.js';
 import artistRoutes from './routes/artist.routes.js';
+import favoriteRoutes from './routes/favorites.routes.js';
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api', artistRoutes);
+app.use('/api', favoriteRoutes);
 
 const __dirname = path.resolve();
 if (process.env.NODE_ENV === 'production') {
