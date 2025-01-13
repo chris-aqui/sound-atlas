@@ -23,14 +23,14 @@ const UserClerkAuth: React.FC = () => {
 
 const Header: React.FC = () => {
 	return (
-		<div className="w-full flex items-center justify-between">
+		<div className="w-full flex flex-wrap sm:flex-nowrap justify-center  sm:items-center ">
 			<div className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
 				<a className="no-underline" href="/">
 					🎵 Sound Atlas
 				</a>
 			</div>
-			<div className="flex items-center justify-between  gap-8 ">
-				<Link to="/favorites" className="text-indigo-600">
+			<div className="flex sm:items-center sm:justify-end gap-8 basis-full mt-6 sm:mt-0">
+				<Link to="/favorites" className="text-indigo-600 basis-10/12 sm:basis-0">
 					Favorites
 				</Link>
 				<UserClerkAuth />

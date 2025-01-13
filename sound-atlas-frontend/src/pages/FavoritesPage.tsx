@@ -47,7 +47,7 @@ const FavoritesPage: React.FC = () => {
 		<ErrorBoundary>
 			<Suspense fallback={<LoadingCard />}>
 				<section className="container mx-auto mt-5">
-					<h1 className="text-2xl font-bold">Your Favorites</h1>
+					<h1 className="text-2xl font-bold mb-5">Your Favorites</h1>
 					<ListContent>
 						{favorites.map((album) => (
 							<AlbumCard key={uuidv4()} album={album.favoriteAlbum} isFavorited={true} />
