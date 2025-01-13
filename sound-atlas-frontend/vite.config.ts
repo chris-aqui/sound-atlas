@@ -4,6 +4,8 @@ import path from "path"
 
 // https://vite.dev/config/
 export default defineConfig({
+  root: './', // Keep the default root for frontend
+  envDir: '../', // Specify the directory where the .env file is located
   server: {
     open: true,
     proxy: {
