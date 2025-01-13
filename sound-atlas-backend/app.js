@@ -5,6 +5,11 @@ import artistRoutes from './routes/artist.routes.js';
 
 const app = express();
 
+app.use(express.json());
+
+// Routes
+app.use('/api', artistRoutes);
+
 const __dirname = path.resolve();
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, '/sound-atlas-frontend/dist')));
@@ -12,11 +17,6 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile(path.resolve(__dirname, 'sound-atlas-frontend', 'dist', 'index.html'));
 	});
 }
-
-app.use(express.json());
-
-// Routes
-app.use('/api', artistRoutes);
 
 // Error handling
 app.use(errorHandler);
